@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    public GameObject item;
+    // public GameObject item;
+    private GameObject itemInstance;
+    public List<GameObject> listItem = new List<GameObject>();
     public float spawnTime;
+    private IEnumerator coroutine;
     float m_spawnTime;
     int m_score;
     bool m_isGameover;
@@ -30,19 +33,40 @@ public class GameController : MonoBehaviour
 
         if(m_spawnTime <= 0)
         {
-            SpawnItem();
-
+            // for(int i = 0 ; i <= m_score / 10 ; i++)
+            // {
+            //     SpawnItem();
+            //     m_spawnTime = spawnTime;
+            // }
+            coroutine = WaitToExecute(0.5f);
+            StartCoroutine(coroutine);
             m_spawnTime = spawnTime;
+
+        }
+
+    }
+
+    private IEnumerator WaitToExecute(float waitTime)
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(waitTime);
+            SpawnItem();
         }
     }
+
     public void SpawnItem()
     {
         Vector2 spawnPosition = new Vector2(Random.Range(-3,3),6);
-        if(item)
+        if(listItem.Count!=0)
         {
-            Instantiate(item,spawnPosition,Quaternion.identity);
+            int random = Random.Range(0,6);
+
+            itemInstance = 
+            Instantiate(listItem[random],spawnPosition,Quaternion.identity);
         }
     }
+
 
     public void SetScore(int value)
     {
