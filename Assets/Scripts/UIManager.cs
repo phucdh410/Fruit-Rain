@@ -5,15 +5,17 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Text scoreText;
+    public GameObject gameoverPanel;
+    public void SetScoreText(string txt)
     {
-        
+        if(scoreText)
+            scoreText.text = txt;
     }
-
-    // Update is called once per frame
-    void Update()
+    public void ShowGameoverPanel(bool isShow)
     {
-        
+        if(gameoverPanel)
+            gameoverPanel.SetActive(isShow);
     }
+    
 }

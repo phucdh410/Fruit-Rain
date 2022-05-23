@@ -12,11 +12,14 @@ public class GameController : MonoBehaviour
     float m_spawnTime;
     int m_score;
     bool m_isGameover;
+    UIManager m_ui;
 
     // Start is called before the first frame update
     void Start()
     {
         m_spawnTime = 0;
+        m_ui = FindObjectOfType<UIManager>();
+        m_ui.SetScoreText("Score: " + m_score);
     }
 
     // Update is called once per frame
@@ -27,21 +30,16 @@ public class GameController : MonoBehaviour
         if(m_isGameover)
         {
             m_spawnTime = 0;
-            
+            m_ui.ShowGameoverPanel(true);
             return;
         }
 
         if(m_spawnTime <= 0)
         {
-            // for(int i = 0 ; i <= m_score / 10 ; i++)
-            // {
-            //     SpawnItem();
-            //     m_spawnTime = spawnTime;
-            // }
-            coroutine = WaitToExecute(0.5f);
-            StartCoroutine(coroutine);
+            // coroutine = WaitToExecute(1f);
+            // StartCoroutine(coroutine);
+            SpawnItem();
             m_spawnTime = spawnTime;
-
         }
 
     }
@@ -52,6 +50,7 @@ public class GameController : MonoBehaviour
         {
             yield return new WaitForSeconds(waitTime);
             SpawnItem();
+            m_spawnTime = spawnTime;
         }
     }
 
@@ -66,7 +65,13 @@ public class GameController : MonoBehaviour
             Instantiate(listItem[random],spawnPosition,Quaternion.identity);
         }
     }
-
+    public void Replay()
+    {
+        m_score = 0;
+        m_isGameover = false;
+        m_ui.SetScoreText("Score: " + m_score);
+        m_ui.ShowGameoverPanel(false);
+    }
 
     public void SetScore(int value)
     {
@@ -79,6 +84,7 @@ public class GameController : MonoBehaviour
     public void AddScore()
     {
         m_score++;
+        m_ui.SetScoreText("Score: " + m_score);
     }
     public bool IsGameover()
     {
